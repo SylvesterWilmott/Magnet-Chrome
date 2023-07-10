@@ -1,0 +1,23 @@
+{
+  "EXT_NAME": {
+    "message": "Magnet - Automatic window tiling"
+  },
+  "EXT_NAME_SHORT": {
+    "message": "Magnet"
+  },
+  "EXT_DESCRIPTION": {
+    "message": "Magnet keeps your workspace tidy by automatically tiling your windows."
+  },
+  "SHORTCUT": {
+    "message": "Ctrl + Shift + P"
+  },
+  "SHORTCUT_MAC": {
+    "message": "\u21E7\u2318P"
+  },
+  "MENU_MAIN_WINDOW": {
+    "message": "Main Window"
+  },
+  "MENU_SOUNDS": {
+    "message": "Sounds"
+  }
+}
