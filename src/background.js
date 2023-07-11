@@ -333,7 +333,7 @@ async function tileWindows (win) {
     const allWindows = await windows.getWindows()
     const visibleNormalWindows = allWindows.filter(
       (window) => window.type === 'normal' && window.state !== 'minimized'
-    );
+    )
     const totalNumberOfWindows = visibleNormalWindows.length
 
     if (totalNumberOfWindows === 0) {
@@ -423,7 +423,7 @@ async function tileWindowsWithMain (win) {
     const allWindows = await windows.getWindows()
     const visibleNormalWindows = allWindows.filter(
       (window) => window.type === 'normal' && window.state !== 'minimized'
-    );
+    )
     const totalNumberOfWindows = visibleNormalWindows.length
 
     if (totalNumberOfWindows === 0) {
@@ -553,19 +553,19 @@ async function tileWindowsWithMain (win) {
   }
 }
 
-function compareWindowExpectedSize(pos1, pos2) {
-  const keys1 = Object.keys(pos1);
+function compareWindowExpectedSize (pos1, pos2) {
+  const keys1 = Object.keys(pos1)
 
   for (const key of keys1) {
     if (pos1[key] !== pos2[key]) {
-      return false;
+      return false
     }
   }
 
-  return true;
+  return true
 }
 
-async function normalizeWindowStates(windows) {
+async function normalizeWindowStates (windows) {
   for (const w of windows) {
     if (w.state && w.state === 'fullscreen') {
       await windows.updateState(w.id, 'normal')
