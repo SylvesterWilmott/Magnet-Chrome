@@ -565,8 +565,8 @@ function compareWindowExpectedSize (pos1, pos2) {
   return true
 }
 
-async function normalizeWindowStates (windows) {
-  for (const w of windows) {
+async function normalizeWindowStates (wins) {
+  for (const w of wins) {
     if (w.state && w.state === 'fullscreen') {
       await windows.updateState(w.id, 'normal')
     }
