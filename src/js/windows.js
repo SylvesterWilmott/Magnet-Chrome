@@ -34,9 +34,25 @@ export function setWindow (id, obj) {
   })
 }
 
-export function get (windowId) {
+export function get (id) {
   return new Promise((resolve, reject) => {
-    chrome.windows.get(windowId,
+    chrome.windows.get(id,
+      function (win) {
+        if (chrome.runtime.lastError) {
+          reject(chrome.runtime.lastError.message)
+        }
+        resolve(win)
+      }
+    )
+  })
+}
+
+export function updateState (id, newState) {
+  return new Promise((resolve, reject) => {
+    chrome.windows.update(id,
+      {
+        state: newState
+      },
       function (win) {
         if (chrome.runtime.lastError) {
           reject(chrome.runtime.lastError.message)

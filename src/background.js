@@ -331,12 +331,17 @@ async function startTileProcess (win) {
 async function tileWindows (win) {
   try {
     const allWindows = await windows.getWindows()
-    const normalWindows = allWindows.filter((window) => window.type === 'normal');
-    const totalNumberOfWindows = normalWindows.length
+    const visibleNormalWindows = allWindows.filter(
+      (window) => window.type === 'normal' && window.state !== 'minimized'
+    )
+    const totalNumberOfWindows = visibleNormalWindows.length
 
     if (totalNumberOfWindows === 0) {
       return
     }
+
+    // If any windows are fullscreen or minimized then set them as normal before tiling
+    await normalizeWindowStates(visibleNormalWindows)
 
     let numberOfRows
     let numberOfColumns
@@ -381,8 +386,8 @@ async function tileWindows (win) {
 
     const winUpdates = []
 
-    for (const w of normalWindows) {
-      const index = normalWindows.indexOf(w)
+    for (const w of visibleNormalWindows) {
+      const index = visibleNormalWindows.indexOf(w)
       if (index !== -1) {
         const { id } = w
         winUpdates.push({
@@ -416,12 +421,16 @@ async function tileWindows (win) {
 async function tileWindowsWithMain (win) {
   try {
     const allWindows = await windows.getWindows()
-    const normalWindows = allWindows.filter((window) => window.type === 'normal');
-    const totalNumberOfWindows = normalWindows.length
+    const visibleNormalWindows = allWindows.filter(
+      (window) => window.type === 'normal' && window.state !== 'minimized'
+    )
+    const totalNumberOfWindows = visibleNormalWindows.length
 
     if (totalNumberOfWindows === 0) {
       return
     }
+
+    await normalizeWindowStates(visibleNormalWindows)
 
     let numberOfRows
     let numberOfColumns
@@ -509,8 +518,8 @@ async function tileWindowsWithMain (win) {
 
     const winUpdates = []
 
-    for (const w of normalWindows) {
-      const index = normalWindows.indexOf(w)
+    for (const w of visibleNormalWindows) {
+      const index = visibleNormalWindows.indexOf(w)
       if (index !== -1) {
         const { id } = w
 
@@ -544,16 +553,24 @@ async function tileWindowsWithMain (win) {
   }
 }
 
-function compareWindowExpectedSize(pos1, pos2) {
-  const keys1 = Object.keys(pos1);
+function compareWindowExpectedSize (pos1, pos2) {
+  const keys1 = Object.keys(pos1)
 
   for (const key of keys1) {
     if (pos1[key] !== pos2[key]) {
-      return false;
+      return false
     }
   }
 
-  return true;
+  return true
+}
+
+async function normalizeWindowStates (wins) {
+  for (const w of wins) {
+    if (w.state && w.state === 'fullscreen') {
+      await windows.updateState(w.id, 'normal')
+    }
+  }
 }
 
 function calculateTilingData (numberOfRows, numberOfColumns, displayWorkArea) {
