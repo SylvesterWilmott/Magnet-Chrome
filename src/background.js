@@ -331,8 +331,8 @@ async function startTileProcess (win) {
 async function tileWindows (win) {
   try {
     const allWindows = await windows.getWindows()
-
-    const totalNumberOfWindows = allWindows.length
+    const normalWindows = allWindows.filter((window) => window.type === 'normal');
+    const totalNumberOfWindows = normalWindows.length
 
     if (totalNumberOfWindows === 0) {
       return
@@ -381,8 +381,8 @@ async function tileWindows (win) {
 
     const winUpdates = []
 
-    for (const w of allWindows) {
-      const index = allWindows.indexOf(w)
+    for (const w of normalWindows) {
+      const index = normalWindows.indexOf(w)
       if (index !== -1) {
         const { id } = w
         winUpdates.push({
@@ -395,7 +395,18 @@ async function tileWindows (win) {
     }
 
     for (const w of winUpdates) {
-      await windows.setWindow(w.id, w.position)
+      const win = await windows.get(w.id)
+      const currentPosition = {
+        top: win.top,
+        left: win.left,
+        height: win.height,
+        width: win.width
+      }
+      const positonIsSame = compareWindowExpectedSize(w.position, currentPosition)
+
+      if (!positonIsSame) {
+        await windows.setWindow(w.id, w.position)
+      }
     }
   } catch (error) {
     handleError(error)
@@ -405,8 +416,8 @@ async function tileWindows (win) {
 async function tileWindowsWithMain (win) {
   try {
     const allWindows = await windows.getWindows()
-
-    const totalNumberOfWindows = allWindows.length
+    const normalWindows = allWindows.filter((window) => window.type === 'normal');
+    const totalNumberOfWindows = normalWindows.length
 
     if (totalNumberOfWindows === 0) {
       return
@@ -498,8 +509,8 @@ async function tileWindowsWithMain (win) {
 
     const winUpdates = []
 
-    for (const w of allWindows) {
-      const index = allWindows.indexOf(w)
+    for (const w of normalWindows) {
+      const index = normalWindows.indexOf(w)
       if (index !== -1) {
         const { id } = w
 
@@ -515,11 +526,34 @@ async function tileWindowsWithMain (win) {
     }
 
     for (const w of winUpdates) {
-      await windows.setWindow(w.id, w.position)
+      const win = await windows.get(w.id)
+      const currentPosition = {
+        top: win.top,
+        left: win.left,
+        height: win.height,
+        width: win.width
+      }
+      const positonIsSame = compareWindowExpectedSize(w.position, currentPosition)
+
+      if (!positonIsSame) {
+        await windows.setWindow(w.id, w.position)
+      }
     }
   } catch (error) {
     handleError(error)
   }
+}
+
+function compareWindowExpectedSize(pos1, pos2) {
+  const keys1 = Object.keys(pos1);
+
+  for (const key of keys1) {
+    if (pos1[key] !== pos2[key]) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 function calculateTilingData (numberOfRows, numberOfColumns, displayWorkArea) {
