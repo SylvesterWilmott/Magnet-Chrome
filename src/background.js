@@ -15,8 +15,8 @@ const throttledplaySound = throttle(playSound, 100)
 chrome.runtime.onStartup.addListener(init)
 chrome.runtime.onInstalled.addListener(init)
 chrome.action.onClicked.addListener(onActionClicked)
-chrome.windows.onCreated.addListener(onWindowCreated, { windowTypes: ["normal"] })
-chrome.windows.onRemoved.addListener(onWindowRemoved, { windowTypes: ["normal"] })
+chrome.windows.onCreated.addListener(onWindowCreated, { windowType: ["normal"] })
+chrome.windows.onRemoved.addListener(onWindowRemoved, { windowType: ["normal"] })
 chrome.contextMenus.onClicked.addListener(onMenuClicked)
 
 const parameters = {
@@ -251,8 +251,7 @@ async function onWindowCreated (win) {
   }
 }
 
-async function onWindowRemoved (id, info) {
-  console.log(id, info)
+async function onWindowRemoved () {
   try {
     const allWindows = await windows.getWindows()
     const allDisplays = await display.getDisplayInfo()
