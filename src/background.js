@@ -15,8 +15,8 @@ const throttledplaySound = throttle(playSound, 100)
 chrome.runtime.onStartup.addListener(init)
 chrome.runtime.onInstalled.addListener(init)
 chrome.action.onClicked.addListener(onActionClicked)
-chrome.windows.onCreated.addListener(onWindowCreated)
-chrome.windows.onRemoved.addListener(onWindowRemoved)
+chrome.windows.onCreated.addListener(onWindowCreated, { windowTypes: ["normal"] })
+chrome.windows.onRemoved.addListener(onWindowRemoved, { windowTypes: ["normal"] })
 chrome.contextMenus.onClicked.addListener(onMenuClicked)
 
 const parameters = {
@@ -251,7 +251,8 @@ async function onWindowCreated (win) {
   }
 }
 
-async function onWindowRemoved () {
+async function onWindowRemoved (id, info) {
+  console.log(id, info)
   try {
     const allWindows = await windows.getWindows()
     const allDisplays = await display.getDisplayInfo()
@@ -332,7 +333,7 @@ async function tileWindows (win) {
   try {
     const allWindows = await windows.getWindows()
     const visibleNormalWindows = allWindows.filter(
-      (window) => window.type === 'normal' && window.state !== 'minimized'
+      (win) => win.type === 'normal' && win.state !== 'minimized'
     )
     const totalNumberOfWindows = visibleNormalWindows.length
 
@@ -395,7 +396,7 @@ async function tileWindows (win) {
           position: tilingData.positions[index]
         })
       } else {
-        throw new Error(`No index found for window with ID ${window.id}`)
+        throw new Error(`No index found for window with ID ${win.id}`)
       }
     }
 
@@ -422,7 +423,7 @@ async function tileWindowsWithMain (win) {
   try {
     const allWindows = await windows.getWindows()
     const visibleNormalWindows = allWindows.filter(
-      (window) => window.type === 'normal' && window.state !== 'minimized'
+      (win) => win.type === 'normal' && win.state !== 'minimized'
     )
     const totalNumberOfWindows = visibleNormalWindows.length
 
@@ -530,7 +531,7 @@ async function tileWindowsWithMain (win) {
           position
         })
       } else {
-        throw new Error(`No index found for window with ID ${window.id}`)
+        throw new Error(`No index found for window with ID ${win.id}`)
       }
     }
 
