@@ -34,7 +34,7 @@ async function init (info) {
     await updateTitle()
 
     if (info.reason === 'install') {
-      await install.showWelcomePage()
+      await install.showOnboarding()
     }
   } catch (error) {
     handleError(error)

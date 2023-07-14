@@ -3,7 +3,7 @@
   --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", Arial, sans-serif;
-  --primary: #ED4D12;
+  --primary: #ed4d12;
   --primary-transparent: rgba(237, 77, 18, 0.06);
   --select: rgba(237, 77, 18, 0.15);
   --neutral-primary: rgba(0, 0, 0, 0.87);
@@ -16,7 +16,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --primary: #FFB59E;
+    --primary: #ffb59e;
     --primary-transparent: rgba(255, 181, 158, 0.06);
     --selection: rgba(255, 181, 158, 0.15);
     --neutral-primary: rgba(255, 255, 255, 0.87);

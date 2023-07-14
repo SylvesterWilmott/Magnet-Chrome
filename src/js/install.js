@@ -2,7 +2,7 @@
 
 /* global chrome */
 
-export async function showWelcomePage() {
+export async function showOnboarding() {
   try {
     const path = "onboarding/html/welcome.html";
     const relativeUrl = chrome.runtime.getURL(path);
