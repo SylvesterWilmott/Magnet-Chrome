@@ -118,3 +118,10 @@ body {
 .step-text {
   width: 100%;
 }
+
+code {
+  background: var(--neutral-tertiary);
+  padding: 2px 4px;
+  border-radius: 4px;
+  color: var(--neutral-primary);
+}

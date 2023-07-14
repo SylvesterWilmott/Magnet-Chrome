@@ -36,13 +36,19 @@
     "message": "3"
   },
   "TUTORIAL_STEP_1": {
-    "message": "Pin the extension icon and click it to enable or disable tiling."
+    "message": "Pin the extension icon and click it to enable or disable tiling or use the keyboard shortcut <code>$shortcut$</code>.",
+    "placeholders": {
+      "shortcut": {
+        "content": "$1",
+        "example": "Platform shortcut"
+      }
+    }
   },
   "TUTORIAL_STEP_2": {
     "message": "When you create new windows, Magnet will automatically arrange them in perfect tiles."
   },
   "TUTORIAL_STEP_3": {
-    "message": "Right-click the extension icon for preferences"
+    "message": "Right-click the extension icon for preferences."
   },
   "WELCOME_DISMISS": {
     "message": "OK"
