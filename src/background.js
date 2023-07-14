@@ -9,14 +9,15 @@ import * as message from './js/message.js'
 import * as offscreen from './js/offscreen.js'
 import * as storage from './js/storage.js'
 import * as windows from './js/windows.js'
+import * as tabs from './js/tabs.js'
 
 const throttledplaySound = throttle(playSound, 100)
 
 chrome.runtime.onStartup.addListener(init)
 chrome.runtime.onInstalled.addListener(init)
 chrome.action.onClicked.addListener(onActionClicked)
-chrome.windows.onCreated.addListener(onWindowCreated, { windowType: ["normal"] })
-chrome.windows.onRemoved.addListener(onWindowRemoved, { windowType: ["normal"] })
+chrome.windows.onCreated.addListener(onWindowCreated, { windowType: ['normal'] })
+chrome.windows.onRemoved.addListener(onWindowRemoved, { windowType: ['normal'] })
 chrome.contextMenus.onClicked.addListener(onMenuClicked)
 
 const parameters = {
@@ -26,11 +27,26 @@ const parameters = {
   PADDING: 10
 }
 
-async function init () {
+async function init (info) {
   try {
     await setupContextMenu()
     await loadPreferences()
     await updateTitle()
+
+    if ('reason' in info && info.reason === 'install') {
+      await showOnboarding()
+    }
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+async function showOnboarding () {
+  try {
+    const path = 'onboarding/html/welcome.html'
+    const relativeUrl = chrome.runtime.getURL(path)
+
+    await tabs.create(relativeUrl)
   } catch (error) {
     handleError(error)
   }
