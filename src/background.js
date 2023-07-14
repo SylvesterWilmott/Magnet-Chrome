@@ -9,6 +9,7 @@ import * as message from './js/message.js'
 import * as offscreen from './js/offscreen.js'
 import * as storage from './js/storage.js'
 import * as windows from './js/windows.js'
+import * as tabs from './js/tabs.js'
 
 const throttledplaySound = throttle(playSound, 100)
 
@@ -32,7 +33,7 @@ async function init (info) {
     await loadPreferences()
     await updateTitle()
 
-    if (info.reason === 'install') {
+    if (info.reason === 'update') {
       await showOnboarding()
     }
   } catch (error) {
@@ -45,7 +46,7 @@ async function showOnboarding () {
     const path = 'onboarding/html/welcome.html'
     const relativeUrl = chrome.runtime.getURL(path)
 
-    await chrome.tabs.create({ url: relativeUrl })
+    await tabs.create(relativeUrl)
   } catch (error) {
     handleError(error)
   }
