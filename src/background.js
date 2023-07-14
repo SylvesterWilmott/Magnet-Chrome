@@ -9,6 +9,7 @@ import * as message from './js/message.js'
 import * as offscreen from './js/offscreen.js'
 import * as storage from './js/storage.js'
 import * as windows from './js/windows.js'
+import * as install from './js/install.js'
 
 const throttledplaySound = throttle(playSound, 100)
 
@@ -26,11 +27,15 @@ const parameters = {
   PADDING: 10
 }
 
-async function init () {
+async function init (info) {
   try {
     await setupContextMenu()
     await loadPreferences()
     await updateTitle()
+
+    if (info.reason === 'install') {
+      await install.showWelcomePage()
+    }
   } catch (error) {
     handleError(error)
   }
