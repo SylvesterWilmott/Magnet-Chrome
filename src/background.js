@@ -9,15 +9,14 @@ import * as message from './js/message.js'
 import * as offscreen from './js/offscreen.js'
 import * as storage from './js/storage.js'
 import * as windows from './js/windows.js'
-import * as install from './js/install.js'
 
 const throttledplaySound = throttle(playSound, 100)
 
 chrome.runtime.onStartup.addListener(init)
 chrome.runtime.onInstalled.addListener(init)
 chrome.action.onClicked.addListener(onActionClicked)
-chrome.windows.onCreated.addListener(onWindowCreated, { windowType: ["normal"] })
-chrome.windows.onRemoved.addListener(onWindowRemoved, { windowType: ["normal"] })
+chrome.windows.onCreated.addListener(onWindowCreated, { windowType: ['normal'] })
+chrome.windows.onRemoved.addListener(onWindowRemoved, { windowType: ['normal'] })
 chrome.contextMenus.onClicked.addListener(onMenuClicked)
 
 const parameters = {
@@ -34,8 +33,19 @@ async function init (info) {
     await updateTitle()
 
     if (info.reason === 'install') {
-      await install.showOnboarding()
+      await showOnboarding()
     }
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+async function showOnboarding () {
+  try {
+    const path = 'onboarding/html/welcome.html'
+    const relativeUrl = chrome.runtime.getURL(path)
+
+    await chrome.tabs.create({ url: relativeUrl })
   } catch (error) {
     handleError(error)
   }
